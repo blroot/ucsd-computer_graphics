@@ -56,7 +56,6 @@ void Transform::up(float degrees, vec3& eye, vec3& up) {
 mat4 Transform::lookAt(vec3 eye, vec3 up) {
 
   mat4 resulting_matrix(1.0f);
-  mat4 eye_matrix(1.0f);
 
   vec3 w = glm::normalize(eye);
   vec3 u = glm::normalize(glm::cross(up, w));
