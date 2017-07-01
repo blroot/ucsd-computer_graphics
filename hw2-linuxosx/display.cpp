@@ -50,12 +50,12 @@ void display()
 
   // Either use the built-in lookAt function or the lookAt implemented by the user.
   if (useGlu) {
-    mv = glm::lookAt(eye,center,up); 
+    mv = glm::lookAt(eye,center,up);
   } else {
     mv = Transform::lookAt(eye,center,up); 
   }
 
-  glLoadMatrixf(&mv[0][0]); 
+  glLoadMatrixf(&mv[0][0]);
 
   // Lights are transformed by current modelview matrix. 
   // The shader can't do this globally. 
@@ -81,9 +81,11 @@ void display()
   // YOUR CODE FOR HW 2 HERE.  
   // You need to use scale, translate and modelview to 
   // set up the net transformation matrix for the objects.  
-  // Account for GLM issues, matrix order, etc.  
+  // Account for GLM issues, matrix order, etc.
 
-  glLoadMatrixf(&transf[0][0]); 
+  transf = sc * tr * mv;
+
+  glLoadMatrixf(&transf[0][0]);
 
   for (int i = 0 ; i < numobjects ; i++) {
     object* obj = &(objects[i]); // Grabs an object struct.

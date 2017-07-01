@@ -77,26 +77,45 @@ mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up)
 
 mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
 {
-  mat4 ret;
-  // YOUR CODE FOR HW2 HERE
-  // New, to implement the perspective transform as well.  
-  return ret;
+  mat4 resulting_matrix(0.0f);
+
+  float fovy_radians = glm::radians(fovy);
+  float d = 1/tan(fovy_radians/2);
+
+  float A = -(zFar + zNear)/(zFar - zNear);
+  float B = -(2 * zFar * zNear)/(zFar - zNear);
+
+  resulting_matrix[0][0] = d/aspect;
+  resulting_matrix[1][1] = d;
+
+  resulting_matrix[2][2] = A;
+  resulting_matrix[3][2] = B;
+
+  resulting_matrix[2][3] = -1;
+
+  return resulting_matrix;
 }
 
 mat4 Transform::scale(const float &sx, const float &sy, const float &sz) 
 {
-  mat4 ret;
-  // YOUR CODE FOR HW2 HERE
-  // Implement scaling 
-  return ret;
+  mat4 resulting_matrix(1.0f);
+
+  resulting_matrix[0][0] = sx;
+  resulting_matrix[1][1] = sy;
+  resulting_matrix[2][2] = sz;
+
+  return resulting_matrix;
 }
 
 mat4 Transform::translate(const float &tx, const float &ty, const float &tz) 
 {
-  mat4 ret;
-  // YOUR CODE FOR HW2 HERE
-  // Implement translation 
-  return ret;
+  mat4 resulting_matrix(1.0f);
+
+  resulting_matrix[3][0] = tx;
+  resulting_matrix[3][1] = ty;
+  resulting_matrix[3][2] = tz;
+
+  return resulting_matrix;
 }
 
 // To normalize the up direction and construct a coordinate frame.  

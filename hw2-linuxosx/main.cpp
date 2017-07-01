@@ -41,7 +41,7 @@ void reshape(int width, int height)
 
   // I am changing the projection stuff to be consistent with lookAt
   if (useGlu) {
-    mv = glm::perspective(fovy,aspect,zNear,zFar); 
+    mv = glm::perspective(fovy,aspect,zNear,zFar);
   } else {
     mv = Transform::perspective(fovy,aspect,zNear,zFar); 
   }
