@@ -39,6 +39,7 @@ void transformvec (const GLfloat input[4], GLfloat output[4])
 
 void display() 
 {
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   glClearColor(0, 0, 1, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -83,9 +84,9 @@ void display()
   // set up the net transformation matrix for the objects.  
   // Account for GLM issues, matrix order, etc.
 
-  transf = sc * tr * mv;
+  transf = mv * tr * sc;
 
-  glLoadMatrixf(&transf[0][0]);
+  //glLoadMatrixf(&transf[0][0]);
 
   for (int i = 0 ; i < numobjects ; i++) {
     object* obj = &(objects[i]); // Grabs an object struct.
@@ -98,6 +99,9 @@ void display()
     // Actually draw the object
     // We provide the actual glut drawing functions for you.  
     // Remember that obj->type is notation for accessing struct fields
+
+    glLoadMatrixf(&(transf*obj->transform)[0][0]);
+
     if (obj->type == cube) {
       glutSolidCube(obj->size); 
     }

@@ -164,6 +164,15 @@ void readfile(const char* filename)
             // to set up correctly. 
             // Set eyeinit upinit center fovy in variables.h 
 
+        	  eyeinit = vec3(values[0], values[1], values[2]);
+
+        	  center = vec3(values[3], values[4], values[5]);
+
+        	  upinit = vec3(values[6], values[7], values[8]);
+        	  upinit = Transform::upvector(upinit, eyeinit-center);
+
+        	  fovy = values[9];
+
           }
         }
 
@@ -207,36 +216,23 @@ void readfile(const char* filename)
         else if (cmd == "translate") {
           validinput = readvals(s,3,values); 
           if (validinput) {
-
-            // YOUR CODE FOR HW 2 HERE.  
-            // Think about how the transformation stack is affected
-            // You might want to use helper functions on top of file. 
-            // Also keep in mind what order your matrix is!
-
+        	  rightmultiply(Transform::translate(values[0], values[1], values[2]), transfstack);
           }
         }
         else if (cmd == "scale") {
           validinput = readvals(s,3,values); 
           if (validinput) {
-
-            // YOUR CODE FOR HW 2 HERE.  
-            // Think about how the transformation stack is affected
-            // You might want to use helper functions on top of file.  
-            // Also keep in mind what order your matrix is!
-
+        	  rightmultiply(Transform::scale(values[0], values[1], values[2]), transfstack);
           }
         }
         else if (cmd == "rotate") {
           validinput = readvals(s,4,values); 
           if (validinput) {
+        	  vec3 axis(values[0], values[1], values[2]);
+        	  axis = glm::normalize(axis);
 
-            // YOUR CODE FOR HW 2 HERE. 
-            // values[0..2] are the axis, values[3] is the angle.  
-            // You may want to normalize the axis (or in Transform::rotate)
-            // See how the stack is affected, as above.  
-            // Note that rotate returns a mat3. 
-            // Also keep in mind what order your matrix is!
-
+        	  mat3 rotation_matrix = Transform::rotate(values[3], axis);
+        	  rightmultiply(mat4(rotation_matrix), transfstack);
           }
         }
 

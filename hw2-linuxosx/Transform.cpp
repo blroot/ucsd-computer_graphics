@@ -6,8 +6,8 @@
 
 #include "Transform.h"
 
-// Helper rotation function.  Please implement this.  
-mat3 Transform::rotate(const float degrees, const vec3& axis) 
+// Helper rotation function.  Please implement this.
+mat3 Transform::rotate(const float degrees, const vec3& axis)
 {
 	mat3 resulting_matrix(1.0f);
 
@@ -35,12 +35,12 @@ mat3 Transform::rotate(const float degrees, const vec3& axis)
 	return resulting_matrix;
 }
 
-void Transform::left(float degrees, vec3& eye, vec3& up) 
+void Transform::left(float degrees, vec3& eye, vec3& up)
 {
 	eye = eye * rotate(-degrees, glm::normalize(up));
 }
 
-void Transform::up(float degrees, vec3& eye, vec3& up) 
+void Transform::up(float degrees, vec3& eye, vec3& up)
 {
 	vec3 w = glm::normalize(glm::cross(eye, up));
 	mat3 rotation_matrix = rotate(-degrees, w);
@@ -48,7 +48,7 @@ void Transform::up(float degrees, vec3& eye, vec3& up)
 	up = up * rotation_matrix;
 }
 
-mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up) 
+mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up)
 {
 	mat4 resulting_matrix(1.0f);
 
@@ -96,7 +96,7 @@ mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
   return resulting_matrix;
 }
 
-mat4 Transform::scale(const float &sx, const float &sy, const float &sz) 
+mat4 Transform::scale(const float &sx, const float &sy, const float &sz)
 {
   mat4 resulting_matrix(1.0f);
 
@@ -107,7 +107,7 @@ mat4 Transform::scale(const float &sx, const float &sy, const float &sz)
   return resulting_matrix;
 }
 
-mat4 Transform::translate(const float &tx, const float &ty, const float &tz) 
+mat4 Transform::translate(const float &tx, const float &ty, const float &tz)
 {
   mat4 resulting_matrix(1.0f);
 
@@ -118,18 +118,19 @@ mat4 Transform::translate(const float &tx, const float &ty, const float &tz)
   return resulting_matrix;
 }
 
-// To normalize the up direction and construct a coordinate frame.  
-// As discussed in the lecture.  May be relevant to create a properly 
-// orthogonal and normalized up. 
-// This function is provided as a helper, in case you want to use it. 
-// Using this function (in readfile.cpp or display.cpp) is optional.  
 
-vec3 Transform::upvector(const vec3 &up, const vec3 & zvec) 
+// To normalize the up direction and construct a coordinate frame.
+// As discussed in the lecture.  May be relevant to create a properly
+// orthogonal and normalized up.
+// This function is provided as a helper, in case you want to use it.
+// Using this function (in readfile.cpp or display.cpp) is optional.
+
+vec3 Transform::upvector(const vec3 &up, const vec3 & zvec)
 {
-  vec3 x = glm::cross(up,zvec); 
-  vec3 y = glm::cross(zvec,x); 
-  vec3 ret = glm::normalize(y); 
-  return ret; 
+  vec3 x = glm::cross(up,zvec);
+  vec3 y = glm::cross(zvec,x);
+  vec3 ret = glm::normalize(y);
+  return ret;
 }
 
 
