@@ -9,30 +9,70 @@
 // Helper rotation function.  Please implement this.  
 mat3 Transform::rotate(const float degrees, const vec3& axis) 
 {
-  mat3 ret;
-  // YOUR CODE FOR HW2 HERE
-  // Please implement this.  Likely the same as in HW 1.  
-  return ret;
+	mat3 resulting_matrix(1.0f);
+
+	float radians = glm::radians(degrees);
+	float cosine = cos(radians);
+	float sine = sin(radians);
+	const float one_minus_cosine = 1.0f - cosine;
+
+	const float x = axis.x;
+	const float y = axis.y;
+	const float z = axis.z;
+
+	resulting_matrix[0][0] = x * x * one_minus_cosine + cosine;
+	resulting_matrix[1][0] = x * y * one_minus_cosine - z * sine;
+	resulting_matrix[2][0] = x * z * one_minus_cosine + y * sine;
+
+	resulting_matrix[0][1] = x * y * one_minus_cosine + z * sine;
+	resulting_matrix[1][1] = y * y * one_minus_cosine + cosine;
+	resulting_matrix[2][1] = y * z * one_minus_cosine - x * sine;
+
+	resulting_matrix[0][2] = x * z * one_minus_cosine - y * sine;
+	resulting_matrix[1][2] = y * z * one_minus_cosine + x * sine;
+	resulting_matrix[2][2] = z * z * one_minus_cosine + cosine;
+
+	return resulting_matrix;
 }
 
 void Transform::left(float degrees, vec3& eye, vec3& up) 
 {
-  // YOUR CODE FOR HW2 HERE
-  // Likely the same as in HW 1.  
+	eye = eye * rotate(-degrees, glm::normalize(up));
 }
 
 void Transform::up(float degrees, vec3& eye, vec3& up) 
 {
-  // YOUR CODE FOR HW2 HERE 
-  // Likely the same as in HW 1.  
+	vec3 w = glm::normalize(glm::cross(eye, up));
+	mat3 rotation_matrix = rotate(-degrees, w);
+	eye = eye * rotation_matrix;
+	up = up * rotation_matrix;
 }
 
 mat4 Transform::lookAt(const vec3 &eye, const vec3 &center, const vec3 &up) 
 {
-  mat4 ret;
-  // YOUR CODE FOR HW2 HERE
-  // Likely the same as in HW 1.  
-  return ret;
+	mat4 resulting_matrix(1.0f);
+
+	vec3 w = glm::normalize(eye);
+	vec3 u = glm::normalize(glm::cross(up, w));
+	vec3 v = glm::cross(w, u);
+
+	resulting_matrix[0][0] = u.x;
+	resulting_matrix[1][0] = u.y;
+	resulting_matrix[2][0] = u.z;
+
+	resulting_matrix[0][1] = v.x;
+	resulting_matrix[1][1] = v.y;
+	resulting_matrix[2][1] = v.z;
+
+	resulting_matrix[0][2] = w.x;
+	resulting_matrix[1][2] = w.y;
+	resulting_matrix[2][2] = w.z;
+
+	resulting_matrix[3][0] = glm::dot(u, -eye);
+	resulting_matrix[3][1] = glm::dot(v, -eye);
+	resulting_matrix[3][2] = glm::dot(w, -eye);
+
+	return resulting_matrix;
 }
 
 mat4 Transform::perspective(float fovy, float aspect, float zNear, float zFar)
