@@ -39,7 +39,6 @@ void transformvec (const GLfloat input[4], GLfloat output[4])
 
 void display() 
 {
-  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   glClearColor(0, 0, 1, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -69,6 +68,13 @@ void display()
     // glUniform4fv() and similar functions will be useful. See FAQ for help with these functions.
     // The lightransf[] array in variables.h and transformvec() might also be useful here.
     // Remember that light positions must be transformed by modelview.  
+
+    for (int i = 0; i < numused; i++) {
+    	transformvec(&lightposn[i*4], &lightransf[i*4]);
+    }
+    glUniform1i(numusedcol, numused);
+    glUniform4fv(lightpos, numused, lightransf);
+    glUniform4fv(lightcol, numused, lightcolor);
 
   } else {
     glUniform1i(enablelighting,false); 
@@ -101,6 +107,11 @@ void display()
     // Remember that obj->type is notation for accessing struct fields
 
     glLoadMatrixf(&(transf*obj->transform)[0][0]);
+    glUniform4fv(ambientcol, 1, obj->ambient);
+    glUniform4fv(diffusecol, 1, obj->diffuse);
+    glUniform4fv(specularcol, 1, obj->specular);
+    glUniform4fv(emissioncol, 1, obj->emission);
+    glUniform1f(shininesscol, obj->shininess);
 
     if (obj->type == cube) {
       glutSolidCube(obj->size); 

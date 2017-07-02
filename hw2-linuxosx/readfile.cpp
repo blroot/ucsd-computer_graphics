@@ -105,6 +105,11 @@ void readfile(const char* filename)
               // Make use of lightposn[] and lightcolor[] arrays in variables.h
               // Those arrays can then be used in display too.  
 
+              for (int i = 0; i < 4; i++) {
+            	  lightposn[i+4*numused] = values[i];
+            	  lightcolor[i+4*numused] = values[i+4];
+              }
+
               ++numused; 
             }
           }
